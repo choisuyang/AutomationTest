@@ -37,6 +37,7 @@ public class PlayGround {
                 // 예: 팝업 창 닫기
                 driver.close();
                 System.out.println("Popup window closed");
+                //tet
             }
         }
 
