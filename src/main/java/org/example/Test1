@@ -1,0 +1,82 @@
+
+package com.cj.pc;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+import org.junit.*;
+import static org.junit.Assert.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+import com.cj.pack.Duplicate;
+import com.cj.util.SmartProperties;
+
+/**
+ *
+ * @author 최형범 Subject : CJ ONSTYLEScenario : CJmall > TV 쇼핑 > 편성표 > 상품선택 >
+ *         바로구매 > 로그인 > 주문서 Assertion : 주문서 Text 체크
+ *
+ **/
+
+public class P_Live_001 {
+
+    private WebDriver driver;
+    private String P_URL = null;
+
+    @Before
+    public void setUp() throws Exception {
+
+        ChromeOptions options = new ChromeOptions();
+        // options.addArguments("headless");
+        options.addArguments("disable-gpu");
+        options.addArguments("start-maximized");
+
+        driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        << 10초간 웹브라우저가 대기하도록 기다림
+
+        Date now = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("EEE", Locale.ENGLISH);
+        String today = format.format(now);
+        << 날짜 데이터, EEE는 요일을 wed 노출, 결과를 영어로 노출, today에다가 결과 저장
+
+        SmartProperties sp = SmartProperties.getInstance();
+        << SmartProperties 에서 설정한 값을 가져옴
+
+        if(today.equals("Wed")) {
+
+            P_URL = sp.getProperty("STG_P_URL");
+            << 날짜가 수요일이면 P_URL을 sp 에서 STG_P_URL 을 가져와서 적용
+
+        }else {
+
+            P_URL = sp.getProperty("P_URL");
+            << 아니면 P_URL 적용
+        }
+
+    }
+
+    @Test
+    public void p_schedule_001() throws Exception {
+
+        // CJ 오쇼핑 메인 페이지 호출
+        driver.get(P_URL);
+
+        // 생방송 상품 체크
+        Duplicate duplicate = new Duplicate(driver);
+        assertTrue(duplicate.schedule(1));
+
+        << Duplicate 에 driver 값을 전달하고 해당 schedule(1)의 결과를 가져와 True결과가 나오는지 확인
+    }
+
+    @After
+    public void tearDown() throws Exception {
+
+        driver.quit();
+    }
+
+    << driver 자동화 진행 종료
+}

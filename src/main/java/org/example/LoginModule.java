@@ -24,12 +24,12 @@ public class LoginModule {
 
         // 비밀번호 입력
         WebElement inputPw = driver.findElement(By.id("password_input"));
-        inputPw.sendKeys("cjmall2$");
+        inputPw.sendKeys("cjmall2$$");
 
         // 로그인 버튼 클릭
         WebElement clickLoginBtn = driver.findElement(By.id("loginSubmit"));
         clickLoginBtn.click();
-        Thread.sleep(5000);
+        Thread.sleep(3000);
     }
 
 //    public  void main() throws InterruptedException {
