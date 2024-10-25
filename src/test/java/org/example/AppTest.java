@@ -53,6 +53,8 @@ import io.appium.java_client.service.local.AppiumDriverLocalService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -64,35 +66,41 @@ public class AppTest {
     UiAutomator2Options options;
 
     @Before
-    public void configureAppium()  {
+    public void configureAppium() throws Exception {
         options = new UiAutomator2Options();
-//        options.setDeviceName("My Phone");
-        options.setUdid("RFCM9096PKN");
-        options.setPlatformName("Android");
-//        options.setPlatformVersion("6.0");
-//        options.setCapability("appPackage", "com.cjoshppingphone");
-//        options.setCapability("appActivity", "com.cjoshppingphone.cjmall.main.MainActivity");
-        options.setCapability("browserName","Chrome");
+        options.setChromedriverExecutable("D:\\chromedriver\\chromedriver.exe");
+        options.withBrowserName("Chrome");
+        options.setAutomationName("UiAutomator2");
         options.setNoReset(true);
+        options.eventTimings();
 
+        driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
+        driver.get("https://google.com");
 
     }
 
     @Test
-    public void mainTest() throws MalformedURLException{
+    public void mainTest() throws Exception {
+
+        Thread.sleep(5000);
+        System.out.println("test");
         // Appium 서비스 시작
 //        service = AppiumDriverLocalService.buildDefaultService();
 //        service.start();
-        options.setCapability("uiautomator2ServerInstallTimeout", 60000); // 60초로 설정
+        //options.setCapability("uiautomator2ServerInstallTimeout", 60000); // 60초로 설정
 
         // 드라이버 초기화
-//        driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
-//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30)); // 30초로 수정
-        }
+
+        //driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(30)); // 30초로 수정
+
+        //driver.get("https://m.naver.com/");
+
+//        WebDriver driver1 = new RemoteWebDriver(new URL("http://127.0.0.1:4723/wd/hub"), options);
+//        driver1.get("http://www.google.com");
+    }
 
     @After
     public void close() {
-            driver.quit();
-
+        driver.quit();
     }
 }
